@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KakABoom // Cyber Store 2077</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              black: '#0a0814',
+              dark: '#120e24',
+              card: 'rgba(23, 17, 46, 0.75)',
+              accent: '#8b5cf6',
+              neon: '#06b6d4',
+              pink: '#ec4899',
+              border: '#3b2d6b',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          boxShadow: {
+            'neon-purple': '0 0 15px rgba(139, 92, 246, 0.5), 0 0 30px rgba(139, 92, 246, 0.2)',
+            'neon-blue': '0 0 15px rgba(6, 182, 212, 0.5), 0 0 30px rgba(6, 182, 212, 0.2)',
+            'neon-pink': '0 0 15px rgba(236, 72, 153, 0.5)',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap');
+    
+    body {
+      background-color: #0a0814;
+      color: #e2e8f0;
+      font-family: 'Rajdhani', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .font-orbitron {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    /* Cyberpunk backdrop grid */
+    .cyber-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+    }
+
+    /* Glassmorphism */
+    .glass-panel {
+      background: rgba(18, 14, 36, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+    }
+
+    .glass-card {
+      background: rgba(23, 17, 46, 0.65);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(6, 182, 212, 0.6);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+      transform: translateY(-4px);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0814;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3b2d6b;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8b5cf6;
+    }
+
+    /* Dual Range Slider Styling */
+    .range-slider-container {
+      position: relative;
+      height: 6px;
+      background: #1e1738;
+      border-radius: 3px;
+    }
+    .range-track {
+      position: absolute;
+      height: 100%;
+      background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+      border-radius: 3px;
+    }
+    .range-input {
+      position: absolute;
+      width: 100%;
+      height: 6px;
+      top: 0;
+      background: none;
+      pointer-events: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .range-input::-webkit-slider-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #06b6d4;
+      border: 2px solid #ffffff;
+      cursor: pointer;
+      pointer-events: auto;
+      -webkit-appearance: none;
+      box-shadow: 0 0 10px #06b6d4;
+    }
+    .range-input::-moz-range-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #06b6d4;
+      border: 2px solid #ffffff;
+      cursor: pointer;
+      pointer-events: auto;
+      box-shadow: 0 0 10px #06b6d4;
+    }
+
+    /* Flying Item Animation Target */
+    .flying-item {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 20px #06b6d4, 0 0 30px #8b5cf6;
+      transition: all 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+
+    /* Pulse Glow */
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+    .glow-effect {
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="cyber-grid min-h-screen flex flex-col selection:bg-purple-600 selection:text-white">
+
+  <!-- TOP NEON GLOW BAR -->
+  <div class="h-1 w-full bg-gradient-to-r from-purple-600 via-cyan-400 to-pink-500 shadow-neon-purple"></div>
+
+  <!-- HEADER / NAVIGATION -->
+  <header class="sticky top-0 z-40 glass-panel border-b border-purple-900/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- LOGO -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-cyan-500 flex items-center justify-center shadow-neon-purple text-white font-black text-xl font-orbitron">
+          K
+        </div>
+        <div>
+          <span class="font-orbitron font-extrabold text-2xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-cyan-300 to-pink-400">
+            KakABoom
+          </span>
+          <span class="block text-[10px] tracking-widest text-cyan-400 font-mono -mt-1">CYBER STORE // 2077</span>
+        </div>
+      </div>
+
+      <!-- NAV TABS -->
+      <nav class="hidden md:flex items-center space-x-2 bg-cyber-dark/80 p-1.5 rounded-xl border border-purple-900/50">
+        <button id="nav-home" onclick="switchTab('home')" class="px-6 py-2 rounded-lg font-orbitron text-sm font-semibold transition-all duration-200 text-cyan-400 bg-purple-900/40 border border-purple-500/30 shadow-neon-purple">
+          <i class="fa-solid fa-house mr-2"></i>Головна
+        </button>
+        <button id="nav-catalog" onclick="switchTab('catalog')" class="px-6 py-2 rounded-lg font-orbitron text-sm font-semibold transition-all duration-200 text-gray-400 hover:text-white hover:bg-purple-900/20">
+          <i class="fa-solid fa-layer-group mr-2"></i>Каталог
+        </button>
+      </nav>
+
+      <!-- USER ACTIONS -->
+      <div class="flex items-center space-x-4">
+        <!-- USER PROFILE BAR -->
+        <button onclick="toggleModal('profile-modal')" class="flex items-center space-x-3 bg-cyber-dark/80 hover:bg-purple-900/30 border border-purple-500/30 p-1.5 pr-4 rounded-full transition-all">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 p-0.5 relative">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80" alt="Avatar" class="w-full h-full rounded-full object-cover">
+            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-cyber-black rounded-full"></span>
+          </div>
+          <div class="text-left hidden sm:block">
+            <div class="font-orbitron text-xs font-bold text-cyan-300 flex items-center">
+              <span>XXIRROKI</span>
+              <span class="ml-1.5 px-1.5 py-0.2 text-[9px] bg-purple-900/80 text-purple-300 rounded border border-purple-500/40">VIP</span>
+            </div>
+            <div class="text-[11px] font-mono text-emerald-400" id="header-balance">$5,420.00</div>
+          </div>
+        </button>
+
+        <!-- CART BUTTON -->
+        <button id="cart-button" onclick="toggleCartModal()" class="relative p-2.5 rounded-xl bg-purple-900/30 border border-purple-500/40 text-cyan-400 hover:text-white hover:border-cyan-400 hover:shadow-neon-blue transition-all">
+          <i class="fa-solid fa-cart-shopping text-xl"></i>
+          <span id="cart-badge" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-pink-500 text-white font-mono text-xs font-bold flex items-center justify-center shadow-neon-pink">
+            0
+          </span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- PAGE: HOME -->
+    <section id="page-home" class="space-y-12">
+      <!-- HERO BANNER -->
+      <div class="relative rounded-3xl overflow-hidden glass-panel border border-purple-500/30 p-8 sm:p-12 md:p-16 flex flex-col justify-center min-h-[420px]">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyber-black via-cyber-dark/80 to-transparent z-10"></div>
+        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1600&q=80" class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Cyberpunk Setup">
+        
+        <div class="relative z-20 max-w-2xl space-y-6">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-mono">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span>NEXT-GEN CYBERWARE STORE</span>
+          </div>
+          <h1 class="font-orbitron font-black text-4xl sm:text-5xl md:text-6xl text-white tracking-wide leading-tight">
+            ОБЛАДНАННЯ <br>
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-cyan-400 to-pink-500">
+              МАЙБУТНЬОГО
+            </span>
+          </h1>
+          <p class="text-gray-300 text-base sm:text-lg font-sans max-w-xl">
+            Ласкаво просимо, <span class="text-cyan-300 font-bold font-orbitron">XXIRROKI</span>! Пориньте у світ високотехнологічної периферії, нейроінтерфейсів та топових ігрових систем.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-2">
+            <button onclick="switchTab('catalog')" class="px-8 py-3.5 rounded-xl font-orbitron font-bold text-sm bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white shadow-neon-purple transition-all transform hover:-translate-y-0.5">
+              В КАТАЛОГ <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+            <button onclick="filterBySubcategory('Звукова периферия', 'Наушники')" class="px-6 py-3.5 rounded-xl font-orbitron font-bold text-sm bg-cyber-dark/80 border border-purple-500/40 text-gray-200 hover:border-cyan-400 transition-all">
+              ХІТИ ПРОДАЖІВ
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURED CATEGORIES PREVIEW -->
+      <div>
+        <div class="flex justify-between items-end mb-6">
+          <div>
+            <h2 class="font-orbitron text-2xl font-bold text-white tracking-wide">ПОПУЛЯРНІ КАТЕГОРІЇ</h2>
+            <p class="text-xs text-gray-400 font-mono mt-1">// ШВИДКИЙ ДОСТУП ДО ОБЛАДНАННЯ</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- CAT 1 -->
+          <div onclick="selectCategory('Звукова периферия')" class="glass-card p-6 rounded-2xl cursor-pointer group hover:border-cyan-400 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-purple-900/40 border border-purple-500/40 flex items-center justify-center text-cyan-400 text-2xl mb-4 group-hover:scale-110 group-hover:shadow-neon-blue transition-all">
+              <i class="fa-solid fa-headphones"></i>
+            </div>
+            <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyan-300">Звук та Аудіо</h3>
+            <p class="text-xs text-gray-400 mt-2">Навушники, студійні колонки, ЦАП та мікрофони.</p>
+          </div>
+
+          <!-- CAT 2 -->
+          <div onclick="selectCategory('Игровые ПК и Ноутбуки')" class="glass-card p-6 rounded-2xl cursor-pointer group hover:border-cyan-400 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-purple-900/40 border border-purple-500/40 flex items-center justify-center text-purple-400 text-2xl mb-4 group-hover:scale-110 group-hover:shadow-neon-purple transition-all">
+              <i class="fa-solid fa-desktop"></i>
+            </div>
+            <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-purple-300">ПК та Ноутбуки</h3>
+            <p class="text-xs text-gray-400 mt-2">Кастомні бойові станції та потужні ноути.</p>
+          </div>
+
+          <!-- CAT 3 -->
+          <div onclick="selectCategory('Периферия')" class="glass-card p-6 rounded-2xl cursor-pointer group hover:border-cyan-400 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-purple-900/40 border border-purple-500/40 flex items-center justify-center text-pink-400 text-2xl mb-4 group-hover:scale-110 group-hover:shadow-neon-pink transition-all">
+              <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-pink-300">Периферія</h3>
+            <p class="text-xs text-gray-400 mt-2">Миші, механічні клавіатури, геймпади.</p>
+          </div>
+
+          <!-- CAT 4 -->
+          <div onclick="selectCategory('Оптика и Видео')" class="glass-card p-6 rounded-2xl cursor-pointer group hover:border-cyan-400 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-purple-900/40 border border-purple-500/40 flex items-center justify-center text-emerald-400 text-2xl mb-4 group-hover:scale-110 group-hover:shadow-neon-blue transition-all">
+              <i class="fa-solid fa-vr-cardboard"></i>
+            </div>
+            <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-emerald-300">Оптика & VR</h3>
+            <p class="text-xs text-gray-400 mt-2">OLED монітори, VR-шоломи та 4K веб-камери.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURED PRODUCTS -->
+      <div>
+        <div class="flex justify-between items-center mb-6">
+          <div>
+            <h2 class="font-orbitron text-2xl font-bold text-white tracking-wide">ТОП ТОВАРІВ МІСЯЦЯ</h2>
+            <p class="text-xs text-gray-400 font-mono mt-1">// ВИБІР КІБЕРСПОРТСМЕНІВ</p>
+          </div>
+          <button onclick="switchTab('catalog')" class="text-xs font-orbitron text-cyan-400 hover:underline flex items-center">
+            ДИВИТИСЯ ВСІ <i class="fa-solid fa-angle-right ml-1"></i>
+          </button>
+        </div>
+
+        <div id="featured-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <!-- Dynamic JS content -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: CATALOG -->
+    <section id="page-catalog" class="hidden space-y-6">
+      
+      <!-- TOP BAR / SEARCH -->
+      <div class="glass-panel p-4 rounded-2xl flex flex-col md:flex-row gap-4 items-center justify-between border border-purple-500/30">
+        <div class="relative w-full md:w-96">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-purple-400"></i>
+          <input type="text" id="search-input" oninput="handleSearch()" placeholder="Пошук обладнання..." class="w-full bg-cyber-dark/90 border border-purple-900/60 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400">
+        </div>
+
+        <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+          <span class="text-xs font-mono text-gray-400">ЗНАЙДЕНО: <span id="products-count" class="text-cyan-400 font-bold">0</span></span>
+          <select id="sort-select" onchange="applyFilters()" class="bg-cyber-dark/90 border border-purple-900/60 rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-cyan-400">
+            <option value="default">Сортування: За замовчуванням</option>
+            <option value="price-asc">Ціна: Від найдешевших</option>
+            <option value="price-desc">Ціна: Від найдорожчих</option>
+            <option value="rating">Рейтинг: За зростанням</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- MAIN CATALOG LAYOUT (SIDEBAR + GRID) -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- SIDEBAR FILTERS -->
+        <aside class="space-y-6">
+          
+          <!-- CATEGORY ACCORDION MENU -->
+          <div class="glass-panel p-5 rounded-2xl border border-purple-500/30">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-orbitron font-bold text-base text-white flex items-center">
+                <i class="fa-solid fa-list-ul text-cyan-400 mr-2"></i> Категорії
+              </h3>
+              <button onclick="resetCategoryFilter()" class="text-[11px] font-mono text-purple-400 hover:text-cyan-300">
+                Скинути
+              </button>
+            </div>
+
+            <!-- ACCORDION TREE -->
+            <div id="category-accordion" class="space-y-2">
+              <!-- Rendered via Javascript -->
+            </div>
+          </div>
+
+          <!-- DUAL RANGE PRICE SLIDER FILTER -->
+          <div class="glass-panel p-5 rounded-2xl border border-purple-500/30">
+            <h3 class="font-orbitron font-bold text-base text-white mb-4 flex items-center">
+              <i class="fa-solid fa-sliders text-purple-400 mr-2"></i> Фільтр за ціною ($)
+            </h3>
+
+            <!-- DUAL INPUT FIELDS -->
+            <div class="flex items-center gap-3 mb-6">
+              <div class="flex-1 bg-cyber-dark/90 border border-purple-900/60 rounded-xl p-2 flex items-center">
+                <span class="text-xs text-gray-500 mr-1">$</span>
+                <input type="number" id="price-min-input" min="0" max="5000" value="0" oninput="onMinInput(this.value)" class="w-full bg-transparent text-sm text-white focus:outline-none font-mono">
+              </div>
+              <span class="text-gray-500 font-mono">-</span>
+              <div class="flex-1 bg-cyber-dark/90 border border-purple-900/60 rounded-xl p-2 flex items-center">
+                <span class="text-xs text-gray-500 mr-1">$</span>
+                <input type="number" id="price-max-input" min="0" max="5000" value="5000" oninput="onMaxInput(this.value)" class="w-full bg-transparent text-sm text-white focus:outline-none font-mono">
+              </div>
+            </div>
+
+            <!-- DUAL RANGE SLIDER TRACK -->
+            <div class="px-2">
+              <div class="range-slider-container">
+                <div id="range-track" class="range-track"></div>
+                <input type="range" id="price-min-range" min="0" max="5000" value="0" step="10" oninput="onMinSlider(this.value)" class="range-input">
+                <input type="range" id="price-max-range" min="0" max="5000" value="5000" step="10" oninput="onMaxSlider(this.value)" class="range-input">
+              </div>
+            </div>
+
+            <div class="flex justify-between text-[11px] font-mono text-gray-400 mt-3">
+              <span>MIN: $0</span>
+              <span>MAX: $5000</span>
+            </div>
+          </div>
+
+          <!-- RESET ALL FILTERS BUTTON -->
+          <button onclick="resetAllFilters()" class="w-full py-3 rounded-xl bg-purple-900/30 hover:bg-purple-900/50 border border-purple-500/40 text-purple-300 font-orbitron font-bold text-xs tracking-wider transition-all">
+            <i class="fa-solid fa-rotate-left mr-2"></i> СКИНУТИ ВСІ ФІЛЬТРИ
+          </button>
+
+        </aside>
+
+        <!-- CATALOG PRODUCTS GRID -->
+        <div class="lg:col-span-3">
+          <div id="catalog-products-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <!-- Dynamic JS content -->
+          </div>
+
+          <!-- EMPTY STATE -->
+          <div id="catalog-empty" class="hidden text-center py-16 glass-panel rounded-3xl border border-purple-500/20">
+            <div class="w-20 h-20 mx-auto rounded-full bg-purple-900/30 flex items-center justify-center text-4xl text-purple-400 mb-4">
+              <i class="fa-solid fa-ghost"></i>
+            </div>
+            <h3 class="font-orbitron text-xl font-bold text-white">НІЧОГО НЕ ЗНАЙДЕНО</h3>
+            <p class="text-sm text-gray-400 mt-2">Спробуйте змінити параметри ціни або категорії.</p>
+            <button onclick="resetAllFilters()" class="mt-6 px-6 py-2.5 rounded-xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 font-orbitron text-xs font-bold hover:bg-cyan-500/30 transition-all">
+              Скинути фільтри
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- USER PROFILE MODAL -->
+  <div id="profile-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel w-full max-w-2xl rounded-3xl border border-purple-500/40 overflow-hidden shadow-2xl">
+      <div class="p-6 border-b border-purple-900/50 flex justify-between items-center bg-purple-900/20">
+        <div class="flex items-center space-x-3">
+          <div class="w-3 h-3 rounded-full bg-cyan-400 shadow-neon-blue"></div>
+          <h3 class="font-orbitron font-bold text-lg text-white tracking-wider">ПРОФІЛЬ КОРИСТУВАЧА</h3>
+        </div>
+        <button onclick="toggleModal('profile-modal')" class="text-gray-400 hover:text-white p-2">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
+        <!-- USER INFO -->
+        <div class="flex flex-col sm:flex-row items-center gap-6 glass-card p-6 rounded-2xl">
+          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Avatar" class="w-20 h-20 rounded-2xl object-cover border-2 border-cyan-400 shadow-neon-blue">
+          <div class="text-center sm:text-left space-y-1">
+            <h4 class="font-orbitron font-black text-2xl text-white">XXIRROKI</h4>
+            <p class="text-xs text-cyan-400 font-mono">STATUS: CYBER_GAMER // LEVEL 99</p>
+            <p class="text-xs text-gray-400 font-sans">ID: #88392-XX-2077</p>
+          </div>
+          <div class="sm:ml-auto text-center sm:text-right">
+            <div class="text-xs text-gray-400 font-mono">ПОТОЧНИЙ БАЛАНС</div>
+            <div id="modal-balance" class="font-orbitron font-extrabold text-2xl text-emerald-400">$5,420.00</div>
+          </div>
+        </div>
+
+        <!-- RECHARGE BALANCE -->
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <h4 class="font-orbitron text-sm font-bold text-white flex items-center">
+            <i class="fa-solid fa-wallet text-purple-400 mr-2"></i> ПОПОВНИТИ БАЛАНС
+          </h4>
+          <div class="flex gap-3">
+            <input type="number" id="topup-amount" placeholder="Сума ($)" min="10" value="500" class="flex-1 bg-cyber-dark/90 border border-purple-900/60 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400">
+            <button onclick="topUpBalance()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-orbitron font-bold text-xs shadow-neon-blue hover:opacity-90 transition-all">
+              ПОПОВНИТИ
+            </button>
+          </div>
+        </div>
+
+        <!-- ORDER HISTORY -->
+        <div class="space-y-3">
+          <h4 class="font-orbitron text-sm font-bold text-white flex items-center">
+            <i class="fa-solid fa-clock-rotate-left text-cyan-400 mr-2"></i> ІСТОРІЯ ЗАМОВЛЕНЬ (XXIRROKI)
+          </h4>
+          <div id="order-history-list" class="space-y-2">
+            <!-- Dynamic order list -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART MODAL / SIDEBAR -->
+  <div id="cart-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex justify-end hidden">
+    <div class="glass-panel w-full max-w-md h-full border-l border-purple-500/40 flex flex-col justify-between p-6">
+      
+      <!-- CART HEADER -->
+      <div>
+        <div class="flex justify-between items-center pb-6 border-b border-purple-900/50">
+          <div class="flex items-center space-x-3">
+            <i class="fa-solid fa-cart-shopping text-cyan-400 text-xl"></i>
+            <h3 class="font-orbitron font-bold text-lg text-white">КОРЗИНА ПОКУПОК</h3>
+          </div>
+          <button onclick="toggleCartModal()" class="text-gray-400 hover:text-white p-2">
+            <i class="fa-solid fa-xmark text-xl"></i>
+          </button>
+        </div>
+
+        <!-- CART ITEMS LIST -->
+        <div id="cart-items-container" class="my-6 space-y-4 max-h-[55vh] overflow-y-auto pr-1">
+          <!-- Dynamic Cart Items -->
+        </div>
+      </div>
+
+      <!-- CART FOOTER / CHECKOUT -->
+      <div class="border-t border-purple-900/50 pt-6 space-y-4">
+        <div class="flex justify-between items-center font-orbitron">
+          <span class="text-gray-400 text-sm">РАЗОМ ДО СПЛАТИ:</span>
+          <span id="cart-total-price" class="text-2xl font-black text-emerald-400">$0.00</span>
+        </div>
+
+        <button onclick="checkoutOrder()" class="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-400 hover:from-purple-500 hover:to-cyan-300 text-white font-orbitron font-extrabold text-sm tracking-wider shadow-neon-purple transition-all">
+          ОФОРМИТИ ЗАМОВЛЕННЯ
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NOTIFICATION CONTAINER -->
+  <div id="notification-toast" class="fixed bottom-6 right-6 z-50 glass-panel border border-cyan-400/50 p-4 rounded-2xl flex items-center space-x-3 text-cyan-300 shadow-neon-blue transition-all duration-300 translate-y-24 opacity-0">
+    <i class="fa-solid fa-circle-check text-xl"></i>
+    <span id="notification-text" class="font-orbitron text-xs font-semibold">Сповіщення</span>
+  </div>
+
+  <script>
+    /* =======================================================
+       DATA STRUCTURES & STATE
+    ======================================================= */
+    
+    // Categorized products with subcategories
+    const CATEGORIES = {
+      "Звукова периферия": ["Наушники", "Колонки", "Микрофоны"],
+      "Игровые ПК и Ноутбуки": ["Игровые ПК", "Ноутбуки", "Аксессуары"],
+      "Периферия": ["Мыши", "Клавиатуры", "Геймпады"],
+      "Оптика и Видео": ["Мониторы", "Веб-камеры", "VR-гарнитуры"]
+    };
+
+    // 30 Cyberpunk products dataset
+    const PRODUCTS = [
+      { id: 1, name: "CyberHeadset VX-7000", category: "Звукова периферия", subcategory: "Наушники", price: 299, rating: 4.9, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80", desc: "Бездротові навушники з нейронним шумозаглушенням." },
+      { id: 2, name: "NeuraPulse Gaming Mouse", category: "Периферия", subcategory: "Мыши", price: 149, rating: 4.8, img: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=600&q=80", desc: "Оптичний сенсор 32000 DPI та титанові перемикачі." },
+      { id: 3, name: "Matrix RGB Mech Key", category: "Периферия", subcategory: "Клавиатуры", price: 220, rating: 4.7, img: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=600&q=80", desc: "Механічна клавіатура з оптико-магнітними свічами." },
+      { id: 4, name: "Holoflex 4K VR Helmet", category: "Оптика и Видео", subcategory: "VR-гарнитуры", price: 1299, rating: 5.0, img: "https://images.unsplash.com/photo-1622979135225-d2ba269bc1bd?auto=format&fit=crop&w=600&q=80", desc: "Шолом віртуальної реальності з кутом огляду 180°." },
+      { id: 5, name: "TitanBattlestation RTX 5090", category: "Игровые ПК и Ноутбуки", subcategory: "Игровые ПК", price: 4500, rating: 5.0, img: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80", desc: "Флагманський комп'ютер з рідинним охолодженням." },
+      { id: 6, name: "CyberBook Blade 18", category: "Игровые ПК и Ноутбуки", subcategory: "Ноутбуки", price: 3100, rating: 4.9, img: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=600&q=80", desc: "Ультратонкий ігровий ноутбук з 240Гц OLED екраном." },
+      { id: 7, name: "Quantum Speaker Array", category: "Звукова периферия", subcategory: "Колонки", price: 450, rating: 4.6, img: "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80", desc: "Акустична система з об'ємним 3D-звуком." },
+      { id: 8, name: "Studio CyberMic Pro", category: "Звукова периферия", subcategory: "Микрофоны", price: 190, rating: 4.8, img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80", desc: "Студійний мікрофон для стримінгу та подкастів." },
+      { id: 9, name: "OLED CyberMonitor 240Hz", category: "Оптика и Видео", subcategory: "Мониторы", price: 899, rating: 4.9, img: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=600&q=80", desc: "Вигнутий 34-дюймовий UltraWide монітор." },
+      { id: 10, name: "4K Neural Cam", category: "Оптика и Видео", subcategory: "Веб-камеры", price: 160, rating: 4.5, img: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=600&q=80", desc: "Веб-камера з автофокусом на основі штучного інтелекту." },
+      { id: 11, name: "CyberPad Pro Wireless", category: "Периферия", subcategory: "Геймпады", price: 120, rating: 4.7, img: "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?auto=format&fit=crop&w=600&q=80", desc: "Геймпад з тактильною віддачею нового покоління." },
+      { id: 12, name: "Neon Stand Cooling Rack", category: "Игровые ПК и Ноутбуки", subcategory: "Аксессуары", price: 75, rating: 4.4, img: "https://images.unsplash.com/photo-1544652478-6653e09f18a2?auto=format&fit=crop&w=600&q=80", desc: "Підставка з RGB підсвіткою та охолодженням." },
+      { id: 13, name: "CyberSound In-Ear Pro", category: "Звукова периферия", subcategory: "Наушники", price: 130, rating: 4.6, img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80", desc: "Компактні внутрішньоканальні навушники з басом." },
+      { id: 14, name: "BassCannon Cyber Sub", category: "Звукова периферия", subcategory: "Колонки", price: 320, rating: 4.7, img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80", desc: "Потужний сабвуфер для глибоких низьких частот." },
+      { id: 15, name: "Stealth Mouse CyberGrip", category: "Периферия", subcategory: "Мыши", price: 95, rating: 4.3, img: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=600&q=80", desc: "Легка ергономічна миша для швидких шутерів." },
+      { id: 16, name: "CyberDeck Mini 60%", category: "Периферия", subcategory: "Клавиатуры", price: 175, rating: 4.8, img: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80", desc: "Компактна клавіатура з гарячою заміною свічів." },
+      { id: 17, name: "AeroPC Compact Cyber", category: "Игровые ПК и Ноутбуки", subcategory: "Игровые ПК", price: 2200, rating: 4.7, img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80", desc: "Компактний системний блок у футуристичному корпусі." },
+      { id: 18, name: "NeonBook Slim 15", category: "Игровые ПК и Ноутбуки", subcategory: "Ноутбуки", price: 1800, rating: 4.6, img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80", desc: "Легкий та потужний ноутбук для роботи й ігор." },
+      { id: 19, name: "CyberGoggles Lite VR", category: "Оптика и Видео", subcategory: "VR-гарнитуры", price: 650, rating: 4.5, img: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=600&q=80", desc: "Автономний VR гарнітур для розваг." },
+      { id: 20, name: "VisionPro 144Hz IPS", category: "Оптика и Видео", subcategory: "Мониторы", price: 420, rating: 4.7, img: "https://images.unsplash.com/photo-1547082299-de196ea013d6?auto=format&fit=crop&w=600&q=80", desc: "Безрамочний ігровий монітор із точним кольором." },
+      { id: 21, name: "CyberMic Mini USB", category: "Звукова периферия", subcategory: "Микрофоны", price: 85, rating: 4.2, img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80", desc: "Компактний мікрофон із підсвіткою." },
+      { id: 22, name: "CyberPad Arcade Stick", category: "Периферия", subcategory: "Геймпады", price: 210, rating: 4.9, img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80", desc: "Аркадний контролер для файтингів." },
+      { id: 23, name: "Custom Liquid Kit", category: "Игровые ПК и Ноутбуки", subcategory: "Аксессуары", price: 340, rating: 4.8, img: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80", desc: "Кастомна система водяного охолодження." },
+      { id: 24, name: "CamStream HD 1080p", category: "Оптика и Видео", subcategory: "Веб-камеры", price: 90, rating: 4.3, img: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=600&q=80", desc: "Надійна веб-камера для онлайн спілкування." },
+      { id: 25, name: "CyberHeadset Wireless Lite", category: "Звукова периферия", subcategory: "Наушники", price: 160, rating: 4.5, img: "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=600&q=80", desc: "Легкі бездротові навушники." },
+      { id: 26, name: "RGB LED Soundbar", category: "Звукова периферия", subcategory: "Колонки", price: 110, rating: 4.4, img: "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80", desc: "Компактний саундбар під монітор." },
+      { id: 27, name: "CyberMouse Ultra Wireless", category: "Периферия", subcategory: "Мыши", price: 180, rating: 4.9, img: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=600&q=80", desc: "Бездротова миша з вагою всього 49 грам." },
+      { id: 28, name: "CyberKey Custom Macropad", category: "Периферия", subcategory: "Клавиатуры", price: 80, rating: 4.6, img: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80", desc: "Макропад на 9 клавіш з програмуванням." },
+      { id: 29, name: "TitanRig RTX 4080 Super", category: "Игровые ПК и Ноутбуки", subcategory: "Игровые ПК", price: 3400, rating: 4.9, img: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80", desc: "Потужний ігровий ПК для 4K геймінгу." },
+      { id: 30, name: "VR Cyber Motion Trackers", category: "Оптика и Видео", subcategory: "VR-гарнитуры", price: 280, rating: 4.7, img: "https://images.unsplash.com/photo-1622979135225-d2ba269bc1bd?auto=format&fit=crop&w=600&q=80", desc: "Трекери руху ніг та тіла для VR." }
+    ];
+
+    // State Variables
+    let state = {
+      user: "XXIRROKI",
+      balance: 5420.00,
+      cart: [],
+      selectedCategory: null,
+      selectedSubcategory: null,
+      expandedCategories: {}, // for accordion toggle
+      minPrice: 0,
+      maxPrice: 5000,
+      searchQuery: "",
+      sortBy: "default",
+      orders: [
+        { id: "ORD-9912", items: ["CyberHeadset VX-7000"], total: 299.00, date: "12.10.2026", status: "ДОСТАВЛЕНО" },
+        { id: "ORD-8823", items: ["NeuraPulse Gaming Mouse"], total: 149.00, date: "01.09.2026", status: "ДОСТАВЛЕНО" }
+      ]
+    };
+
+    /* =======================================================
+       INITIALIZATION
+    ======================================================= */
+    window.onload = function() {
+      // Expand all categories initially in accordion
+      Object.keys(CATEGORIES).forEach(cat => {
+        state.expandedCategories[cat] = true;
+      });
+
+      renderAccordion();
+      renderFeaturedProducts();
+      renderCatalogProducts();
+      renderOrderHistory();
+      updatePriceSliderUI();
+    };
+
+    // Tab Switching
+    function switchTab(tab) {
+      const pageHome = document.getElementById('page-home');
+      const pageCatalog = document.getElementById('page-catalog');
+      const navHome = document.getElementById('nav-home');
+      const navCatalog = document.getElementById('nav-catalog');
+
+      if (tab === 'home') {
+        pageHome.classList.remove('hidden');
+        pageCatalog.classList.add('hidden');
+        navHome.className = "px-6 py-2 rounded-lg font-orbitron text-sm font-semibold transition-all duration-200 text-cyan-400 bg-purple-900/40 border border-purple-500/30 shadow-neon-purple";
+        navCatalog.className = "px-6 py-2 rounded-lg font-orbitron text-sm font-semibold transition-all duration-200 text-gray-400 hover:text-white hover:bg-purple-900/20";
+      } else {
+        pageHome.classList.add('hidden');
+        pageCatalog.classList.remove('hidden');
+        navCatalog.className = "px-6 py-2 rounded-lg font-orbitron text-sm font-semibold transition-all duration-200 text-cyan-400 bg-purple-900/40 border border-purple-500/30 shadow-neon-purple";
+        navHome.className = "px-6 py-2 rounded-lg font-orbitron text-sm font-semibold transition-all duration-200 text-gray-400 hover:text-white hover:bg-purple-900/20";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =======================================================
+       ACCORDION & CATEGORY SELECTION LOGIC
+    ======================================================= */
+    function renderAccordion() {
+      const container = document.getElementById('category-accordion');
+      container.innerHTML = '';
+
+      Object.keys(CATEGORIES).forEach(category => {
+        const isExpanded = !!state.expandedCategories[category];
+        const isCatSelected = state.selectedCategory === category && !state.selectedSubcategory;
+
+        const subItems = CATEGORIES[category].map(sub => {
+          const isSubSelected = state.selectedCategory === category && state.selectedSubcategory === sub;
+          return `
+            <button onclick="filterBySubcategory('${category}', '${sub}')" class="w-full text-left py-1.5 px-3 rounded-lg text-xs font-mono transition-all flex items-center justify-between ${isSubSelected ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-400/30' : 'text-gray-400 hover:text-white hover:bg-purple-900/20'}">
+              <span><i class="fa-solid fa-angle-right text-[10px] mr-2 text-purple-400"></i>${sub}</span>
+              <span class="text-[10px] opacity-60">(${getProductsCount(category, sub)})</span>
+            </button>
+          `;
+        }).join('');
+
+        const catHTML = `
+          <div class="rounded-xl border ${isCatSelected ? 'border-cyan-400 bg-purple-900/20' : 'border-purple-900/40 bg-cyber-dark/50'} overflow-hidden">
+            <div class="flex items-center justify-between p-2.5 cursor-pointer hover:bg-purple-900/30 transition-all">
+              <div onclick="selectCategory('${category}')" class="flex-1 flex items-center space-x-2 font-orbitron text-xs font-bold text-gray-200">
+                <i class="fa-solid fa-folder ${isCatSelected ? 'text-cyan-400' : 'text-purple-400'}"></i>
+                <span class="${isCatSelected ? 'text-cyan-300' : ''}">${category}</span>
+              </div>
+              <button onclick="toggleAccordionCategory('${category}', event)" class="p-1 text-gray-400 hover:text-white">
+                <i class="fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'} text-xs"></i>
+              </button>
+            </div>
+            ${isExpanded ? `<div class="pl-4 pr-2 pb-2.5 space-y-1 border-t border-purple-900/30 pt-1.5">${subItems}</div>` : ''}
+          </div>
+        `;
+        container.innerHTML += catHTML;
+      });
+    }
+
+    function toggleAccordionCategory(cat, event) {
+      if (event) event.stopPropagation();
+      state.expandedCategories[cat] = !state.expandedCategories[cat];
+      renderAccordion();
+    }
+
+    function selectCategory(category) {
+      state.selectedCategory = category;
+      state.selectedSubcategory = null;
+      switchTab('catalog');
+      renderAccordion();
+      applyFilters();
+    }
+
+    function filterBySubcategory(category, subcategory) {
+      state.selectedCategory = category;
+      state.selectedSubcategory = subcategory;
+      switchTab('catalog');
+      renderAccordion();
+      applyFilters();
+    }
+
+    function resetCategoryFilter() {
+      state.selectedCategory = null;
+      state.selectedSubcategory = null;
+      renderAccordion();
+      applyFilters();
+    }
+
+    function getProductsCount(category, subcategory) {
+      return PRODUCTS.filter(p => p.category === category && p.subcategory === subcategory).length;
+    }
+
+    /* =======================================================
+       DUAL RANGE SLIDER & PRICE FILTER LOGIC
+    ======================================================= */
+    function updatePriceSliderUI() {
+      const minRange = document.getElementById('price-min-range');
+      const maxRange = document.getElementById('price-max-range');
+      const minInput = document.getElementById('price-min-input');
+      const maxInput = document.getElementById('price-max-input');
+      const track = document.getElementById('range-track');
+
+      const minVal = parseInt(state.minPrice);
+      const maxVal = parseInt(state.maxPrice);
+
+      minRange.value = minVal;
+      maxRange.value = maxVal;
+      minInput.value = minVal;
+      maxInput.value = maxVal;
+
+      const minPercent = (minVal / 5000) * 100;
+      const maxPercent = (maxVal / 5000) * 100;
+
+      track.style.left = minPercent + '%';
+      track.style.width = (maxPercent - minPercent) + '%';
+    }
+
+    function onMinSlider(val) {
+      let minVal = parseInt(val);
+      let maxVal = parseInt(state.maxPrice);
+
+      if (minVal > maxVal - 50) {
+        minVal = maxVal - 50;
+      }
+      state.minPrice = minVal;
+      updatePriceSliderUI();
+      applyFilters();
+    }
+
+    function onMaxSlider(val) {
+      let maxVal = parseInt(val);
+      let minVal = parseInt(state.minPrice);
+
+      if (maxVal < minVal + 50) {
+        maxVal = minVal + 50;
+      }
+      state.maxPrice = maxVal;
+      updatePriceSliderUI();
+      applyFilters();
+    }
+
+    function onMinInput(val) {
+      let minVal = parseInt(val) || 0;
+      if (minVal < 0) minVal = 0;
+      if (minVal > state.maxPrice - 50) minVal = state.maxPrice - 50;
+      state.minPrice = minVal;
+      updatePriceSliderUI();
+      applyFilters();
+    }
+
+    function onMaxInput(val) {
+      let maxVal = parseInt(val) || 5000;
+      if (maxVal > 5000) maxVal = 5000;
+      if (maxVal < state.minPrice + 50) maxVal = state.minPrice + 50;
+      state.maxPrice = maxVal;
+      updatePriceSliderUI();
+      applyFilters();
+    }
+
+    function resetAllFilters() {
+      state.selectedCategory = null;
+      state.selectedSubcategory = null;
+      state.minPrice = 0;
+      state.maxPrice = 5000;
+      state.searchQuery = "";
+      document.getElementById('search-input').value = "";
+      document.getElementById('sort-select').value = "default";
+      
+      updatePriceSliderUI();
+      renderAccordion();
+      applyFilters();
+      showNotification("Фільтри повністю скинуто");
+    }
+
+    function handleSearch() {
+      state.searchQuery = document.getElementById('search-input').value.toLowerCase();
+      applyFilters();
+    }
+
+    /* =======================================================
+       CATALOG FILTERING & RENDERING
+    ======================================================= */
+    function getFilteredProducts() {
+      return PRODUCTS.filter(product => {
+        // Category Filter
+        if (state.selectedCategory && product.category !== state.selectedCategory) return false;
+        // Subcategory Filter
+        if (state.selectedSubcategory && product.subcategory !== state.selectedSubcategory) return false;
+        // Price Range
+        if (product.price < state.minPrice || product.price > state.maxPrice) return false;
+        // Search Query
+        if (state.searchQuery && !product.name.toLowerCase().includes(state.searchQuery) && !product.desc.toLowerCase().includes(state.searchQuery)) return false;
+
+        return true;
+      }).sort((a, b) => {
+        const sort = document.getElementById('sort-select').value;
+        if (sort === 'price-asc') return a.price - b.price;
+        if (sort === 'price-desc') return b.price - a.price;
+        if (sort === 'rating') return b.rating - a.rating;
+        return 0;
+      });
+    }
+
+    function applyFilters() {
+      renderCatalogProducts();
+    }
+
+    function renderProductCard(product) {
+      return `
+        <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+          <div class="relative overflow-hidden h-48 bg-cyber-dark">
+            <img id="product-img-${product.id}" src="${product.img}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300">
+            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-cyber-black/80 border border-purple-500/40 text-[10px] font-mono text-cyan-300">
+              ${product.subcategory}
+            </span>
+            <span class="absolute top-3 right-3 px-2 py-0.5 rounded-lg bg-purple-900/80 text-amber-300 text-xs font-bold font-mono flex items-center">
+              <i class="fa-solid fa-star text-[10px] mr-1"></i>${product.rating}
+            </span>
+          </div>
+
+          <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+            <div>
+              <h3 class="font-orbitron font-bold text-white text-base group-hover:text-cyan-300 transition-colors">${product.name}</h3>
+              <p class="text-xs text-gray-400 mt-1 line-clamp-2">${product.desc}</p>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-purple-900/40">
+              <span class="font-orbitron font-extrabold text-xl text-emerald-400">$${product.price}</span>
+              <button onclick="addToCart(${product.id}, event)" class="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-orbitron font-bold text-xs shadow-neon-purple transition-all flex items-center space-x-2">
+                <i class="fa-solid fa-cart-plus"></i>
+                <span>У КОРЗИНУ</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFeaturedProducts() {
+      const featuredGrid = document.getElementById('featured-products-grid');
+      // Render top 4 products
+      featuredGrid.innerHTML = PRODUCTS.slice(0, 4).map(p => renderProductCard(p)).join('');
+    }
+
+    function renderCatalogProducts() {
+      const catalogGrid = document.getElementById('catalog-products-grid');
+      const emptyState = document.getElementById('catalog-empty');
+      const filtered = getFilteredProducts();
+
+      document.getElementById('products-count').innerText = filtered.length;
+
+      if (filtered.length === 0) {
+        catalogGrid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        catalogGrid.innerHTML = filtered.map(p => renderProductCard(p)).join('');
+      }
+    }
+
+    /* =======================================================
+       FLY-TO-CART ANIMATION & CART SYSTEM
+    ======================================================= */
+    function addToCart(productId, event) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      // Add to internal state
+      const existing = state.cart.find(item => item.id === productId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        state.cart.push({ ...product, qty: 1 });
+      }
+
+      // Fly Animation Calculation
+      const imgElement = document.getElementById(`product-img-${productId}`);
+      const cartBtn = document.getElementById('cart-button');
+
+      if (imgElement && cartBtn) {
+        const imgRect = imgElement.getBoundingClientRect();
+        const cartRect = cartBtn.getBoundingClientRect();
+
+        const flyer = document.createElement('img');
+        flyer.src = product.img;
+        flyer.className = 'flying-item';
+        flyer.style.width = '60px';
+        flyer.style.height = '60px';
+        flyer.style.left = `${imgRect.left + imgRect.width / 2 - 30}px`;
+        flyer.style.top = `${imgRect.top + imgRect.height / 2 - 30}px`;
+
+        document.body.appendChild(flyer);
+
+        setTimeout(() => {
+          flyer.style.left = `${cartRect.left + cartRect.width / 2 - 15}px`;
+          flyer.style.top = `${cartRect.top + cartRect.height / 2 - 15}px`;
+          flyer.style.width = '20px';
+          flyer.style.height = '20px';
+          flyer.style.opacity = '0.4';
+        }, 20);
+
+        setTimeout(() => {
+          flyer.remove();
+          updateCartUI();
+          showNotification(`Додано: ${product.name}`);
+        }, 800);
+      } else {
+        updateCartUI();
+        showNotification(`Додано: ${product.name}`);
+      }
+    }
+
+    function updateCartUI() {
+      const badge = document.getElementById('cart-badge');
+      const container = document.getElementById('cart-items-container');
+      const totalEl = document.getElementById('cart-total-price');
+
+      const totalItems = state.cart.reduce((sum, item) => sum + item.qty, 0);
+      const totalPrice = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      badge.innerText = totalItems;
+      totalEl.innerText = `$${totalPrice.toFixed(2)}`;
+
+      if (state.cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-gray-500">
+            <i class="fa-solid fa-cart-arrow-down text-4xl mb-3"></i>
+            <p class="font-orbitron text-sm">Корзина порожня</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = state.cart.map(item => `
+        <div class="glass-card p-3 rounded-xl flex items-center justify-between gap-3 border border-purple-900/40">
+          <img src="${item.img}" class="w-14 h-14 rounded-lg object-cover">
+          <div class="flex-1 min-w-0">
+            <h4 class="font-orbitron font-bold text-xs text-white truncate">${item.name}</h4>
+            <div class="text-xs text-emerald-400 font-mono mt-0.5">$${item.price} x ${item.qty}</div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="changeQty(${item.id}, -1)" class="w-6 h-6 rounded-lg bg-purple-900/50 hover:bg-purple-800 text-white text-xs font-bold">-</button>
+            <span class="text-xs font-mono font-bold text-white">${item.qty}</span>
+            <button onclick="changeQty(${item.id}, 1)" class="w-6 h-6 rounded-lg bg-purple-900/50 hover:bg-purple-800 text-white text-xs font-bold">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function changeQty(id, delta) {
+      const item = state.cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        state.cart = state.cart.filter(i => i.id !== id);
+      }
+      updateCartUI();
+    }
+
+    function toggleCartModal() {
+      const modal = document.getElementById('cart-modal');
+      modal.classList.toggle('hidden');
+      updateCartUI();
+    }
+
+    /* =======================================================
+       CHECKOUT & USER PROFILE MANAGEMENT
+    ======================================================= */
+    function checkoutOrder() {
+      if (state.cart.length === 0) {
+        showNotification("Корзина порожня!");
+        return;
+      }
+
+      const total = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      if (state.balance < total) {
+        showNotification("Недостатньо коштів на балансі XXIRROKI!");
+        return;
+      }
+
+      // Deduct funds
+      state.balance -= total;
+      
+      // Add Order to History
+      const newOrder = {
+        id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+        items: state.cart.map(i => i.name),
+        total: total,
+        date: new Date().toLocaleDateString('uk-UA'),
+        status: "ОБРОБЛЕНО"
+      };
+      state.orders.unshift(newOrder);
+
+      // Reset Cart
+      state.cart = [];
+      updateCartUI();
+      updateUserBalanceUI();
+      renderOrderHistory();
+      toggleCartModal();
+
+      showNotification(`Замовлення ${newOrder.id} успішно оформлено!`);
+    }
+
+    function topUpBalance() {
+      const input = document.getElementById('topup-amount');
+      const amount = parseFloat(input.value);
+
+      if (isNaN(amount) || amount <= 0) {
+        showNotification("Введіть коректну суму!");
+        return;
+      }
+
+      state.balance += amount;
+      updateUserBalanceUI();
+      showNotification(`Баланс поповнено на $${amount.toFixed(2)}`);
+    }
+
+    function updateUserBalanceUI() {
+      document.getElementById('header-balance').innerText = `$${state.balance.toFixed(2)}`;
+      document.getElementById('modal-balance').innerText = `$${state.balance.toFixed(2)}`;
+    }
+
+    function renderOrderHistory() {
+      const container = document.getElementById('order-history-list');
+      container.innerHTML = state.orders.map(order => `
+        <div class="p-3 rounded-xl bg-cyber-dark/80 border border-purple-900/50 flex justify-between items-center text-xs">
+          <div>
+            <div class="font-orbitron font-bold text-cyan-300">${order.id}</div>
+            <div class="text-[11px] text-gray-400 font-mono">${order.items.join(', ')}</div>
+            <div class="text-[10px] text-gray-500">${order.date}</div>
+          </div>
+          <div class="text-right">
+            <div class="font-orbitron font-extrabold text-emerald-400">$${order.total.toFixed(2)}</div>
+            <span class="inline-block px-2 py-0.5 rounded text-[9px] font-mono bg-purple-900/60 text-purple-300 border border-purple-500/30">${order.status}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.toggle('hidden');
+    }
+
+    function showNotification(text) {
+      const toast = document.getElementById('notification-toast');
+      const toastText = document.getElementById('notification-text');
+      
+      toastText.innerText = text;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
